@@ -30,7 +30,7 @@
   --red:     #f87171;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
   font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   background: var(--bg);
@@ -422,13 +422,13 @@ body {
 <nav class="nav">
   <a href="#" class="nav-logo">WORK<span>LO</span></a>
   <div class="nav-items">
-    <a class="nav-item active" onclick="scrollTo('sec1')">📋 업종 선택</a>
-    <a class="nav-item" onclick="scrollTo('sec2')">📝 등록 절차</a>
-    <a class="nav-item" onclick="scrollTo('sec3')">🏢 사업자 구조</a>
-    <a class="nav-item" onclick="scrollTo('sec4')">🏙 대구·경산</a>
-    <a class="nav-item" onclick="scrollTo('sec5')">🇰🇷 전국 지원</a>
-    <a class="nav-item" onclick="scrollTo('sec6')">📅 로드맵</a>
-    <a class="nav-item" onclick="scrollTo('sec7')">✅ 체크리스트</a>
+    <a class="nav-item active" onclick="scrollToSection('sec1')">📋 업종 선택</a>
+    <a class="nav-item" onclick="scrollToSection('sec2')">📝 등록 절차</a>
+    <a class="nav-item" onclick="scrollToSection('sec3')">🏢 사업자 구조</a>
+    <a class="nav-item" onclick="scrollToSection('sec4')">🏙 대구·경산</a>
+    <a class="nav-item" onclick="scrollToSection('sec5')">🇰🇷 전국 지원</a>
+    <a class="nav-item" onclick="scrollToSection('sec6')">📅 로드맵</a>
+    <a class="nav-item" onclick="scrollToSection('sec7')">✅ 체크리스트</a>
   </div>
 </nav>
 
@@ -1246,11 +1246,15 @@ body {
 </div><!-- end page-body -->
 
 <script>
-function scrollTo(id) {
+function scrollToSection(id) {
   const el = document.getElementById(id);
-  if(el) { el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  if (!el) return;
+  const nav = document.querySelector('.nav');
+  const navH = nav ? nav.offsetHeight : 64;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  event.target.classList.add('active');
+  event.currentTarget.classList.add('active');
 }
 // Scroll spy
 window.addEventListener('scroll', () => {
